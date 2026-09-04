@@ -1,0 +1,30 @@
+# Terraform working directories
+**/.terraform/*
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+
+# Terraform plans
+*.tfplan
+
+# Variable files that may contain environment-specific values
+*.tfvars
+*.tfvars.json
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Local environment files
+.env
+.env.*
+
+# JetBrains IDE settings
+.idea/
+
+# macOS
+.DS_Store
+
+# VS Code local settings
+.vscode/
