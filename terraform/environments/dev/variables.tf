@@ -21,3 +21,9 @@ variable "location" {
   type        = string
   default     = "eastus"
 }
+
+variable "vnet_address_space" {
+  description = "Private IP address ranges assigned to the virtual network"
+  type        = list(string)
+  default     = ["10.20.0.0/16"]
+}
