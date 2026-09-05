@@ -17,3 +17,23 @@ output "virtual_network_address_space" {
   description = "Address ranges assigned to the virtual network"
   value       = azurerm_virtual_network.main.address_space
 }
+
+output "aks_system_subnet_name" {
+  description = "Name of the subnet reserved for AKS system nodes"
+  value       = azurerm_subnet.aks_system.name
+}
+
+output "aks_system_subnet_address_prefixes" {
+  description = "Address ranges assigned to the AKS system subnet"
+  value       = azurerm_subnet.aks_system.address_prefixes
+}
+
+output "aks_user_subnet_name" {
+  description = "Name of the subnet reserved for AKS application nodes"
+  value       = azurerm_subnet.aks_user.name
+}
+
+output "private_endpoints_subnet_name" {
+  description = "Name of the subnet reserved for private endpoints"
+  value       = azurerm_subnet.private_endpoints.name
+}

@@ -28,3 +28,23 @@ resource "azurerm_virtual_network" "main" {
 
   tags = local.common_tags
 }
+resource "azurerm_subnet" "aks_system" {
+  name                 = "snet-aks-system-${var.environment}"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.20.1.0/24"]
+}
+
+resource "azurerm_subnet" "aks_user" {
+  name                 = "snet-aks-user-${var.environment}"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.20.2.0/24"]
+}
+
+resource "azurerm_subnet" "private_endpoints" {
+  name                 = "snet-private-endpoints-${var.environment}"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.20.3.0/24"]
+}
