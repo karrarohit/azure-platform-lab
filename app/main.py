@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -16,3 +18,14 @@ def health() -> dict[str, str]:
 def readiness() -> dict[str, str]:
     """Report whether the application is ready to receive traffic."""
     return {"status": "ready"}
+
+
+@app.get("/info", tags=["info"])
+def info() -> dict[str, str]:
+    """Report the injected configuration and the pod serving the request."""
+    return {
+        "environment": os.getenv("ENVIRONMENT", "unset"),
+        "log_level": os.getenv("LOG_LEVEL", "unset"),
+        "release": os.getenv("RELEASE", "unset"),
+        "pod": os.getenv("POD_NAME", "unset"),
+    }

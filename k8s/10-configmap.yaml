@@ -1,0 +1,11 @@
+# Non-confidential settings, injected as environment variables.
+# Anything genuinely secret belongs in Key Vault via the CSI driver (stage 6),
+# not here and not in a Kubernetes Secret.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platformlab-api
+  namespace: dev
+data:
+  ENVIRONMENT: "dev"
+  LOG_LEVEL: "info"
