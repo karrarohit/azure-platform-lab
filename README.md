@@ -47,14 +47,22 @@ with [docs/00-kubernetes-from-scratch.md](docs/00-kubernetes-from-scratch.md).
 
 ## Infrastructure provisioned so far
 
-Resource group `rg-platformlab-dev` in `eastus`, containing a `10.20.0.0/16` virtual
-network carved into three subnets:
+Resource group `rg-platformlab-dev` in `eastus`, containing one virtual network
+carved into three subnets:
 
 | Subnet | Range | Purpose |
 | --- | --- | --- |
-| `snet-aks-system-dev` | `10.20.1.0/24` | AKS system node pool |
-| `snet-aks-user-dev` | `10.20.2.0/24` | AKS user node pool |
-| `snet-private-endpoints-dev` | `10.20.3.0/24` | Private endpoints |
+| `snet-aks-system-dev` | `10.x.1.0/24` | AKS system node pool |
+| `snet-aks-user-dev` | `10.x.2.0/24` | AKS user node pool |
+| `snet-private-endpoints-dev` | `10.x.3.0/24` | Private endpoints |
+
+Ranges are masked above. Actual values live in `terraform.tfvars`, which is not
+committed — copy `example.tfvars` and supply your own:
+
+```bash
+cd terraform/environments/dev
+cp example.tfvars terraform.tfvars   # then edit
+```
 
 An NSG is attached to the user subnet allowing `AzureLoadBalancer` and intra-vnet
 inbound traffic, and denying inbound from `Internet` at priority 4000.
@@ -76,7 +84,7 @@ inbound traffic, and denying inbound from `Internet` at priority 4000.
 ## Running things
 
 ```bash
-# Terraform
+# Terraform -- needs terraform.tfvars first, see above
 cd terraform/environments/dev
 terraform init && terraform plan
 

@@ -23,7 +23,19 @@ variable "location" {
 }
 
 variable "vnet_address_space" {
-  description = "Private IP address ranges assigned to the virtual network"
+  description = "Address ranges assigned to the virtual network. Supplied from terraform.tfvars, which is not committed."
   type        = list(string)
-  default     = ["10.20.0.0/16"]
+}
+
+variable "subnet_address_prefixes" {
+  description = "Address prefix for each subnet, keyed by role. Supplied from terraform.tfvars, which is not committed."
+  type        = map(string)
+
+  validation {
+    condition = alltrue([
+      for role in ["aks_system", "aks_user", "private_endpoints"] :
+      contains(keys(var.subnet_address_prefixes), role)
+    ])
+    error_message = "subnet_address_prefixes must define aks_system, aks_user and private_endpoints."
+  }
 }
