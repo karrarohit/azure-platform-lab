@@ -14,7 +14,7 @@ spend starts only when the concept is already understood.
 | `app/` | The FastAPI service under test. Health and readiness endpoints, containerised, non-root. |
 | `k8s/` | Plain Kubernetes manifests for the local `kind` lab. Replaced by a Helm chart at stage 2. |
 | `terraform/environments/dev/` | Azure infrastructure. Local state for now; remote state arrives at stage 9. |
-| `docs/` | Notes for each stage, written as the stage is completed. |
+| `docs/` | Notes for each stage, written as the stage is completed. Diagrams live in `docs/diagrams/`. |
 
 ## The application
 
@@ -28,14 +28,14 @@ interesting part.
 | `GET /info` | Reports injected configuration and which pod answered. |
 
 The `/health` and `/ready` split is not decorative: it maps directly onto the two
-Kubernetes probes, which have very different consequences. See
-[docs/01-kubernetes-fundamentals.md](docs/01-kubernetes-fundamentals.md).
+Kubernetes probes, which have very different consequences. New to Kubernetes? Start
+with [docs/00-kubernetes-from-scratch.md](docs/00-kubernetes-from-scratch.md).
 
 ## Roadmap
 
 | # | Stage | Status |
 | --- | --- | --- |
-| 1 | Kubernetes fundamentals (local, on `kind`) | In progress — [notes](docs/01-kubernetes-fundamentals.md) |
+| 1 | Kubernetes fundamentals (local, on `kind`) | Complete — [from scratch](docs/00-kubernetes-from-scratch.md) · [reference](docs/01-kubernetes-fundamentals.md) |
 | 2 | Helm | Not started |
 | 3 | Azure Container Registry | Not started |
 | 4 | AKS | Subnets and NSG provisioned; cluster not created |
