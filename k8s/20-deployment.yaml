@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platformlab-api
+  namespace: dev
+  labels:
+    app: platformlab-api
+spec:
+  replicas: 3
+  # Immutable after creation. Must match the pod template labels below.
+  selector:
+    matchLabels:
+      app: platformlab-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the replica count: add a new ready pod before
+      # removing an old one. A failing readiness probe stalls the rollout
+      # rather than draining capacity.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: platformlab-api
+    spec:
+      containers:
+        - name: api
+          image: platformlab-api:0.1.0
+          # Local kind images only; ACR supplies these from stage 3.
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: platformlab-api
+          env:
+            - name: RELEASE
+              value: "0.1.0"
+            # Surfaces which pod answered, so load balancing is visible.
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          # Process-local only. Never check a dependency here: a shared
+          # outage would restart every replica at once.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          # Failing this removes the pod from Service endpoints without
+          # restarting it. Dependency checks belong here.
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]

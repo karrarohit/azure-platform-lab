@@ -1,0 +1,18 @@
+# ClusterIP: reachable only inside the cluster. An ingress controller sits
+# in front of this at stage 4 -- and its NSG allow rule must use a priority
+# below 4000 to beat Deny-Internet-Inbound.
+apiVersion: v1
+kind: Service
+metadata:
+  name: platformlab-api
+  namespace: dev
+  labels:
+    app: platformlab-api
+spec:
+  type: ClusterIP
+  selector:
+    app: platformlab-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
