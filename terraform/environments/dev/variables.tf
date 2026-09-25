@@ -47,9 +47,9 @@ variable "kubernetes_version" {
 }
 
 variable "node_vm_size" {
-  description = "VM size for the system node pool. Standard_B2s is burstable and the cheapest size AKS supports."
+  description = "VM size for the system node pool. Standard_D2als_v7 is the cheapest x86 size this subscription is allowed in eastus; the B-series is restricted and the cheaper B2pls_v2 is ARM, which would require arm64 images."
   type        = string
-  default     = "Standard_B2s"
+  default     = "Standard_D2als_v7"
 }
 
 variable "node_count" {

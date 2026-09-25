@@ -26,8 +26,10 @@ spec:
     spec:
       containers:
         - name: api
-          image: platformlab-api:0.1.0
-          # Local kind images only; ACR supplies these from stage 3.
+          # Hardcoding the registry here is a known wart: the name carries a
+          # random suffix, so recreating the registry breaks this file. That is
+          # the coupling a Helm value removes.
+          image: acrplatformlabdevp66cyi.azurecr.io/platformlab-api:0.1.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
