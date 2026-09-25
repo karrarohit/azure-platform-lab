@@ -26,8 +26,10 @@ spec:
     spec:
       containers:
         - name: api
-          image: platformlab-api:0.1.0
-          # Local kind images only; ACR supplies these from stage 3.
+          # Hardcoding the registry here is a known wart: the name carries a
+          # random suffix, so recreating the registry breaks this file. That is
+          # the coupling a Helm value removes.
+          image: acrplatformlabdevp66cyi.azurecr.io/platformlab-api:0.1.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -60,9 +62,13 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 5
           resources:
+            # Measured on AKS: this app idles at 1m CPU and 35Mi. 20m gives
+            # twenty times headroom for bursts without reserving capacity
+            # nobody uses. At 50m only 15 replicas fit on one node; at 20m,
+            # twenty fit, on the same hardware.
             requests:
-              cpu: "50m"
-              memory: "64Mi"
+              cpu: "20m"
+              memory: "48Mi"
             limits:
               cpu: "500m"
               memory: "256Mi"
